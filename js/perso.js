@@ -1,10 +1,12 @@
 function Perso ()
 {
+	this.width = 150;
+	this.height = 150;
 	this.x = 50;
 	this.y = 50;
 	this.vx= 5;
 	this.vy= 2;
-	// this.color: 'blue';
+	this.color= 'blue';
 }
 Perso.prototype = 
 {
@@ -30,7 +32,7 @@ Perso.prototype =
 
 		this.draw();
 
-		if (this.y + this.vy > c.height || this.y + this.vy < 0)
+		if (this.y + this.vy > c.height-this.width || this.y + this.vy < 0)
 		{
 			this.vy = -this.vy;
 		}
@@ -38,7 +40,8 @@ Perso.prototype =
 		{
 			this.x += this.vx;
 		}
-		if (this.x + this.vx > c.width || this.x + this.vx < 0) 
+
+		if (this.x + this.vx > c.width-this.height || this.x + this.vx < 0) 
 		{
 			this.vx = -this.vx;
 		}
@@ -50,6 +53,6 @@ Perso.prototype =
 	anim : function ()
 	{
 		self=this;
-		var test=setInterval(function(){self.create()}, 30)
+		var test=setInterval(function(){self.create()}, 15);
 	}
 }
