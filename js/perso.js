@@ -12,47 +12,41 @@ Perso.prototype =
 {
 	draw : function () 
 	{
-	  	ctx.beginPath(); 
+	  	Self.ctx.beginPath();
 
-		for(var i=0;i<1;i++)
-		{
-			ctx.moveTo(this.x,this.y); 
-			ctx.lineTo(this.x+150,this.y+150);
-			ctx.moveTo(this.x+150,this.y); 
-			ctx.lineTo(this.x,this.y+150);
-		}   
+		Self.ctx.moveTo(this.x,this.y); 
+		Self.ctx.lineTo(this.x+150,this.y+150);
+		Self.ctx.moveTo(this.x+150,this.y); 
+		Self.ctx.lineTo(this.x,this.y+150);
 
-		ctx.closePath();
+		Self.ctx.closePath();
 
-		ctx.stroke();	
+		Self.ctx.stroke();	
 	},
-	create : function () 
+	jump : function () 
 	{
-		ctx.clearRect(0,0, c.width, c.height);
+		Self.ctx.clearRect(0,0, Self.c.width, Self.c.height);
 
 		this.draw();
+		this.y += this.vy;
+		this.y -= this.vy;
 
-		if (this.y + this.vy > c.height-this.width || this.y + this.vy < 0)
-		{
-			this.vy = -this.vy;
-		}
-		else
-		{
-			this.x += this.vx;
-		}
-
-		if (this.x + this.vx > c.width-this.height || this.x + this.vx < 0) 
-		{
-			this.vx = -this.vx;
-		}
-		else
-		{
-			this.y += this.vy;			
-		}
 	},
-	anim : function ()
+	left : function () 
 	{
-		self=this;
-		var test=setInterval(function(){self.create()}, 15);
+		Self.ctx.clearRect(0,0, Self.c.width, Self.c.height);
+		this.x += this.vx;
+		this.draw();
+	},
+	right : function () 
+	{
+		Self.ctx.clearRect(0,0, Self.c.width, Self.c.height);
+		this.x -= this.vx;
+		this.draw();
+	},
+	stop : function () 
+	{
+		Self.ctx.clearRect(0,0, Self.c.width, Self.c.height);
+		this.draw();
 	}
 }

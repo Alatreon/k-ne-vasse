@@ -1,8 +1,24 @@
-var c = document.getElementById("mon_canvas");
-var ctx = c.getContext("2d");
+function Main ()
+{
+	Self = this;
+	this.c = document.getElementById("mon_canvas");
+	this.ctx = Self.c.getContext("2d");
 
+	this.KeyboardKey = new KeyboardKey;
+	this.Perso = new Perso;
 
-var Perso = new Perso;
-Perso.create();
-Perso.anim();
+}
+Main.prototype=
+{
+	anim : function ()
+	{
+		Self.Perso.draw();
 
+		Self.KeyboardKey.actionKeys();
+	}
+
+}
+
+var Main = new Main;
+
+Main.anim();
