@@ -5,6 +5,7 @@ function KeyboardKey ()
 	/**/
 	this.heroMoveLeftBool=true;
 	this.heroMoveRightBool=true;
+	this.heroMoveJumpBool=true;
 }
 KeyboardKey.prototype=
 {
@@ -23,10 +24,17 @@ KeyboardKey.prototype=
 	},
 	keyDown : function (evt)
 	{
+		console.log(evt.keyCode)
 		switch(evt.keyCode)
 		{
-			case 32:
-					Self.Perso.jump();
+			case 90:
+				if(evt.keyCode==90 && this.heroMoveJumpBool)
+				{
+					this.heroMoveJumpBool=false;
+					Self.Perso.jump(function(){
+						Self.KeyboardKey.heroMoveJumpBool=true;
+					});
+				}
 			break;
 			case 68:
 				if(evt.keyCode==68 && this.heroMoveRightBool)
@@ -56,13 +64,13 @@ KeyboardKey.prototype=
 		{
 			this.heroMoveRightBool = true;
 			clearInterval(this.heroMoveRightInter);
-			Self.Perso.stop();
+			Self.Perso.stop(evt);
 		}
 		if(evt.keyCode==81)
 		{
 			this.heroMoveLeftBool = true;
 			clearInterval(this.heroMoveLeftInter);
-			Self.Perso.stop();
+			Self.Perso.stop(evt);
 		}
 	}
 }

@@ -1,52 +1,91 @@
 function Perso ()
 {
-	this.width = 150;
-	this.height = 150;
+	/*Position de Perso*/
 	this.x = 50;
-	this.y = 50;
-	this.vx= 5;
+	this.y = Self.Map.floorVal;
+
+
+	/*Vitesse de Perso*/
+	/*deplacement*/
+	this.vx= 3;
+	/*saut*/
 	this.vy= 2;
-	this.color= 'blue';
+
+
+	/*Details visuels de Perso*/
+	this.width = 64;
+	this.height = 128;
+
+	this.color = 'blue';
+
+	this.JumpSize = 128;
 }
 Perso.prototype = 
 {
 	draw : function () 
 	{
+		/*dessin de Perso sur le canvas*/
 	  	Self.ctx.beginPath();
 
 		Self.ctx.moveTo(this.x,this.y); 
-		Self.ctx.lineTo(this.x+150,this.y+150);
-		Self.ctx.moveTo(this.x+150,this.y); 
-		Self.ctx.lineTo(this.x,this.y+150);
+		Self.ctx.lineTo(this.x+this.width,this.y+this.height);
+		Self.ctx.moveTo(this.x+this.width,this.y); 
+		Self.ctx.lineTo(this.x,this.y+this.height);
 
 		Self.ctx.closePath();
 
 		Self.ctx.stroke();	
 	},
-	jump : function () 
+	jump : function (callback) 
 	{
-		Self.ctx.clearRect(0,0, Self.c.width, Self.c.height);
+		self=this		
+		/*Mise en place des variables qui vont determiner la position du saut*/
+		var hautBas = true;
+		var i = 0;
 
-		this.draw();
-		this.y += this.vy;
-		this.y -= this.vy;
+		/*animation du saut*/
+		this.heroMoveJumpInter = setInterval(function()
+		{
+			i+=1;
+
+			if( hautBas == true && i < self.JumpSize/2 )
+			{
+				self.y -= self.vy;
+			}
+			if( hautBas == true && i == self.JumpSize/2 )
+			{
+				hautBas = false;
+			}
+			if( hautBas == false && i < self.JumpSize )
+			{
+				self.y += self.vy;
+			}
+			if( hautBas == false && i == self.JumpSize )
+			{
+				hautBas = true;
+				i = 0;
+				self.y=Self.Map.floorVal;
+				clearInterval(self.heroMoveJumpInter);
+				callback();
+			}
+			
+			Self.drawAll();		
+		
+		},6);
 
 	},
 	left : function () 
 	{
-		Self.ctx.clearRect(0,0, Self.c.width, Self.c.height);
 		this.x += this.vx;
-		this.draw();
+		Self.drawAll();
 	},
 	right : function () 
 	{
-		Self.ctx.clearRect(0,0, Self.c.width, Self.c.height);
-		this.x -= this.vx;
-		this.draw();
+		this.x -= this.vx;		
+		Self.drawAll();
 	},
-	stop : function () 
+	stop : function (evt) 
 	{
-		Self.ctx.clearRect(0,0, Self.c.width, Self.c.height);
-		this.draw();
+		Self.drawAll();
 	}
 }
